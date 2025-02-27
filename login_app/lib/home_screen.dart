@@ -28,7 +28,9 @@ class HomeScreen extends StatelessWidget {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text('Hello ${(state as AuthSuccess).uid}'),
+            title: Text(state is AuthSuccess
+                ? 'Hello ${(state).uid}'
+                : 'Hello bot'),
             centerTitle: true,
           ),
           body: Center(

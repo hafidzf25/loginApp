@@ -49,4 +49,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return emit(AuthFailure(failureMessage: e.toString()));
     }
   }
+
+  @override
+  void onTransition(Transition<AuthEvent, AuthState> transition) {
+    // TODO: implement onTransition
+    super.onTransition(transition);
+    print(transition);
+  }
 }
