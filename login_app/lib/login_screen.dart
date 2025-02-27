@@ -20,22 +20,27 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text(state.failureMessage),
-              ),
-            );
-          } else if (state is AuthSuccess) {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (route) => false);
-          }
-        },
-        child: SingleChildScrollView(
+      body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+        if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: Duration(seconds: 1),
+              content: Text(state.failureMessage),
+            ),
+          );
+        } else if (state is AuthSuccess) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+              (route) => false);
+        }
+      }, builder: (context, state) {
+        if (state is AuthLoading) {
+          return Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        }
+
+        return SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
@@ -85,8 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
